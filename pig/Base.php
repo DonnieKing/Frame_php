@@ -18,7 +18,7 @@ class Base
     protected $queryStr = '';
 
     //构造方法
-    public function __construct($config=[],$queryStr='')
+    public function __construct($config,$queryStr='')
     {
         $this->config = $config;
         $this->queryStr = $queryStr;
@@ -48,10 +48,29 @@ class Base
         // new Stu()
         // $class == \app\admin\controller\Stu
         // /app/admin/controller/Stu
-        $path = str_replace('\\','/',$class).'.php';
-        echo $path;
+        $path = ROOT_PATH.str_replace('\\','/',$class).'.php';
+
+        //如果没有找到类文件，就直接返回默认首页
+        if(!file_exists($path))
+        {
+            header('Location: /');
+        }
+
+        require $path;
+    }
+
+
+    //启动框架
+    public function run()
+    {
+        //调试模式
+        $this->setDebug();
+
+        //自动加载
+        spl_autoload_register([$this,'loader']);
+
+        //请求分发
+        echo (new Route($this->config['route']))->parse($this->queryStr)->dispatch();
     }
 }
 
-$base = new Base();
-$base->loader('app\admin\controller\Stu');
