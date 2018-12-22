@@ -11,7 +11,7 @@ class Controller
     //视图对象
     protected $view = null;
 
-    //构造方法：实例化试图类
+    //构造方法：实例化视图类
     public function __construct()
     {
         $this->view = new namespace\View();
@@ -22,17 +22,17 @@ class Controller
     //视图模板引擎配置
     public function config()
     {
-        //设置模板目录名称
+        //设置模板目录名称[可选]
         $this->view->setDirectory(ROOT_PATH.'/app/admin/view');
 
         //设置模板目录别名：命名空间
         $this->view->addFolder('admin',ROOT_PATH.'/app/admin/view');
 
-        //设置前台目录名称
+        //设置前台目录名称[可选]
         $this->view->setDirectory(ROOT_PATH.'/app/home/view');
 
         //设置前台模板目录别名：命名空间
-        $this->view->addFolder('admin',ROOT_PATH.'/app/home/view');
+        $this->view->addFolder('home',ROOT_PATH.'/app/home/view');
     }
 
     //任何模板引擎都有两个核心的功能
@@ -50,7 +50,7 @@ class Controller
         // $data['price'] = 1000 ,  目标：$price = 1000
         // $data['arr'] = [1,2,3]   目标：$arr=[1,2,3]
 
-        //将数组的键值对转为变量的名值对的过程
+        //将数组的键值对转为变量的名值对的过程,返回变量个数
         extract($this->data);
 
         //2、加载模板文件
