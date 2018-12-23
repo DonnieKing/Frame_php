@@ -23,7 +23,9 @@
 
         <table>
             <caption>武林高手登记表
+                <?php if(isset($_SESSION['name']) && $_SESSION['name'] == 'admin'):?>
                 <small><a href="<?=$this->e($insUrl)?>">增加</a> </small>
+                <?php endif; ?>
             </caption>
             <tr>
                 <th>ID</th>
@@ -47,15 +49,29 @@
                     <?php if(isset($_SESSION['name']) && $_SESSION['name'] == 'admin'):?>
                     <td>
                         <a href="<?=$this->e($editUrl)?>/id/<?=$this->e($row['id']) ?>">修改</a>&nbsp;&nbsp;&nbsp;
-                        <a href="<?=$this->e($delUrl) ?>/id/<?=$this->e($row['id']) ?>">删除</a>
+                        <a href="javascript:;" onclick="del(<?=$this->e($row['id']) ?>); return false;">删除</a>
                     </td>
                     <?php endif; ?>
 
                 </tr>
             <?php endforeach; ?>
         </table>
+<!--    搜索功能-->
+<form action="<?=$this->e($indexUrl)?>" method="post">
+    帮派: <input type="text" name="dept" placeholder="输入帮派关键字">
+    <button>搜索</button>
+</form>
 
+<script>
 
+    function del(id)
+    {
+        if(confirm('是否确认删除id='+id+'的记录？'))
+        {
+            location.href="/frame/admin/index/delete/id/"+id;
+        }
+    }
 
+</script>
 </body>
 </html>
